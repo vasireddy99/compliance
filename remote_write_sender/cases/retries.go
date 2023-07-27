@@ -3,6 +3,7 @@ package cases
 import (
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"sync"
 	"testing"
 	"time"
@@ -49,11 +50,21 @@ func Retries500Test() Test {
 		},
 		Expected: func(t *testing.T, bs []Batch) {
 			found := false
+			//time.Sleep(2 * time.Second)
+			i := 0
 			forAllSamples(bs, func(s sample) {
+				i++
 				if labelsContain(s.l, labels.FromStrings("__name__", "now")) && s.t == ts {
+					t.Logf("Matched label is %s ", s.l )
+					t.Logf("The expected ts is %s and the actual %s", strconv.FormatInt(ts, 10), strconv.FormatInt(s.t, 10))
 					found = true
+				} else {
+					found = false
+					t.Logf("The actual label is %s ", s.l )
+					t.Logf("The expected ts is %s but the actual %s", strconv.FormatInt(ts, 10), strconv.FormatInt(s.t, 10))
 				}
 			})
+			t.Logf("No of samples %s ", i)
 			require.True(t, found, `failed to find sample that should have been retried`)
 		},
 	}

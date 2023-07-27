@@ -5,14 +5,15 @@ import (
 	"os"
 )
 
-const otelDownloadURL = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.42.0/otelcol_0.42.0_{{.OS}}_{{.Arch}}.tar.gz"
+//const otelDownloadURL = "https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.42.0/otelcol_0.42.0_{{.OS}}_{{.Arch}}.tar.gz"
 
 func RunOtelCollector(opts TargetOptions) error {
-	binary, err := downloadBinary(otelDownloadURL, "otelcol")
-	if err != nil {
+	//binary, err := downloadBinary(otelDownloadURL, "otelcol")
+	binary := "/Users/pvasir/AWS/awsopeno11y/compliance/remote_write_sender/bin/otelcontribcol_darwin_amd64"
+/*	if err != nil {
 		return err
 	}
-
+*/
 	cfg := fmt.Sprintf(`
 receivers:
   prometheus:
